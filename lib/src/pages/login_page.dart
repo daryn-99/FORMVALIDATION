@@ -41,19 +41,16 @@ class LoginPage extends StatelessWidget {
                 ]),
             child: Column(
               children: <Widget>[
-                //Cambiar 'Ingreso' por el nombre de la app
                 Text('Ingreso', style: TextStyle(fontSize: 20.0)),
                 SizedBox(height: 60.0),
                 _crearEmail(bloc),
                 SizedBox(height: 30.0),
                 _crearPassword(bloc),
                 SizedBox(height: 30.0),
-                _crearBoton(),
+                _crearBoton(bloc),
               ],
             ),
           ),
-          //Agregar la pestaña de preferencia de idioma arriba
-          //Agregar ¿No tienes una cuenta? Registrate
           Text('¿Olvido la contraseña?'),
           SizedBox(
             height: 50.0,
@@ -64,7 +61,7 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _crearEmail(LoginBloc bloc) {
-    StreamBuilder(
+    return StreamBuilder(
         stream: bloc.emailStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Container(
@@ -74,41 +71,63 @@ class LoginPage extends StatelessWidget {
               decoration: InputDecoration(
                   icon: Icon(Icons.alternate_email, color: Colors.deepPurple),
                   hintText: 'ejemplo@correo.com',
-                  labelText: 'Correo electronico'),
+                  labelText: 'Correo electronico',
+                  counterText: snapshot.data,
+                  errorText: snapshot.error),
+              onChanged: bloc.changeEmail,
             ),
-            onChanged: bloc.changeEmail,
           );
         });
   }
 
-  Widget _crearPassword() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: TextField(
-        obscureText: true,
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-            icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
-            labelText: 'Contraseña'),
-      ),
+  Widget _crearPassword(LoginBloc bloc) {
+    return StreamBuilder(
+        stream: bloc.passwordStream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: TextField(
+              obscureText: true,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                  icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
+                  labelText: 'Contraseña',
+                  counterText: snapshot.data,
+                  errorText: snapshot.error),
+              onChanged: bloc.changePassword,
+            ),
+          );
+        });
+  }
+
+  Widget _crearBoton(LoginBloc bloc) {
+    return StreamBuilder(
+      stream: bloc.formValidStream,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        // ignore: deprecated_member_use
+        return RaisedButton(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+              child: Text('Ingresar'),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            elevation: 0.0,
+            color: Colors.deepPurple,
+            textColor: Colors.white,
+            onPressed: snapshot.hasData ? () => _login(bloc, context) : null);
+      },
     );
   }
 
-  Widget _crearBoton() {
-    // ignore: deprecated_member_use
-    return RaisedButton(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-        child: Text('Ingresar'),
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
-      ),
-      elevation: 0.0,
-      color: Colors.deepPurple,
-      textColor: Colors.white,
-      onPressed: () {},
-    );
+  _login(LoginBloc bloc, BuildContext context) {
+    print('=======================');
+    print('Email: ${bloc.email}');
+    print('Password: ${bloc.password}');
+    print('=======================');
+
+    Navigator.pushReplacementNamed(context, 'home');
   }
 
   Widget _crearFondo(BuildContext context) {
