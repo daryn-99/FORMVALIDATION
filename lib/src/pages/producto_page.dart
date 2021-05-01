@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'package:formvalidation/src/models/producto_model.dart';
+import 'package:formvalidation/src/providers/productos_provider.dart';
 import 'package:formvalidation/src/utils.dart/utils.dart' as utils;
 
 class ProductoPage extends StatefulWidget {
@@ -8,6 +11,9 @@ class ProductoPage extends StatefulWidget {
 
 class _ProductoPageState extends State<ProductoPage> {
   final formKey = GlobalKey<FormState>();
+  final productoProvider = new ProductosProvider();
+
+  ProductoModel producto = new ProductoModel();
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +37,7 @@ class _ProductoPageState extends State<ProductoPage> {
               children: <Widget>[
                 _crearNombre(),
                 _crearPrecio(),
+                _crearDisponible(),
                 _crearBoton(),
               ],
             ),
@@ -54,13 +61,22 @@ class _ProductoPageState extends State<ProductoPage> {
   void _submit() {
     if (!formKey.currentState.validate()) return;
     //Cuando el formulario es valido
+    formKey.currentState.save();
     print('Todo OK!');
+
+    print(producto.titulo);
+    print(producto.valor);
+    print(producto.disponible);
+
+    productoProvider.crearProducto(producto);
   }
 
   Widget _crearNombre() {
     return TextFormField(
+      initialValue: producto.titulo,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(labelText: 'Producto'),
+      onSaved: (value) => producto.titulo = value,
       validator: (value) {
         if (value.length < 3) {
           return 'Ingrese el nombre del producto';
@@ -73,9 +89,11 @@ class _ProductoPageState extends State<ProductoPage> {
 
   Widget _crearPrecio() {
     return TextFormField(
+      initialValue: producto.valor.toString(),
       //Mostrar los numeros del teclado automaticamente
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       decoration: InputDecoration(labelText: 'Precio'),
+      onSaved: (value) => producto.valor = double.parse(value),
       validator: (value) {
         if (utils.isNumeric(value)) {
           return null;
@@ -83,6 +101,17 @@ class _ProductoPageState extends State<ProductoPage> {
           return 'Solo numeros';
         }
       },
+    );
+  }
+
+  Widget _crearDisponible() {
+    return SwitchListTile(
+      value: producto.disponible,
+      title: Text('Disponible'),
+      activeColor: Colors.indigo.shade800,
+      onChanged: (value) => setState(() {
+        producto.disponible = value;
+      }),
     );
   }
 }
