@@ -6,6 +6,12 @@ ProductoModel productoModelFromJson(String str) =>
 String productoModelToJson(ProductoModel data) => json.encode(data.toJson());
 
 class ProductoModel {
+  String id;
+  String titulo;
+  double valor;
+  bool disponible;
+  String fotoUrl;
+
   ProductoModel({
     this.id,
     this.titulo = '',
@@ -14,13 +20,8 @@ class ProductoModel {
     this.fotoUrl,
   });
 
-  String id;
-  String titulo;
-  double valor;
-  bool disponible;
-  String fotoUrl;
-
-  factory ProductoModel.fromJson(Map<String, dynamic> json) => ProductoModel(
+  factory ProductoModel.fromJson(Map<String, dynamic> json) =>
+      new ProductoModel(
         id: json["id"],
         titulo: json["titulo"],
         valor: json["valor"],
@@ -29,7 +30,7 @@ class ProductoModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
+        //"id": id,
         "titulo": titulo,
         "valor": valor,
         "disponible": disponible,

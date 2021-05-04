@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:formvalidation/src/preferencias_usuario/preferencias_usuario.dart';
 import 'package:http/http.dart' as http;
 import 'package:formvalidation/src/models/producto_model.dart';
 
@@ -7,11 +8,12 @@ class ProductosProvider {
   final String _url =
       'https://flutter-varios-97b3f-default-rtdb.firebaseio.com';
 
-  Future<bool> crearProducto(ProductoModel producto) async {
-    final url = '$_url/productos.json';
+  final _prefs = new PreferenciasUsuario();
 
-    final resp = await http.post(Uri.http('url', '/productos.json'),
-        body: productoModelToJson(producto));
+  Future<bool> crearProducto(ProductoModel producto) async {
+    final url = Uri.parse('$_url/productos.json?auth=${_prefs.token}');
+
+    final resp = await http.post(url, body: productoModelToJson(producto));
 
     final decodedData = json.decode(resp.body);
 
@@ -20,13 +22,27 @@ class ProductosProvider {
     return true;
   }
 
-  /*Future<List<ProductoModel>> cargarProductos() async {
-    final url = '$_url/productos.json';
-    final resp = await http.get(Uri.http('url', '/productos.json'));
+  Future<List<ProductoModel>> cargarProductos() async {
+    final url = Uri.parse('$_url/productos.json?auth=${_prefs.token}');
+    final resp = await http.get(url);
 
-    final decodeData = json.decode(resp.body);
+    final Map<String, dynamic> decodeData = json.decode(resp.body);
 
-    print(decodeData);
-    return [];
-  }*/
+    final List<ProductoModel> productos = new List();
+
+    if (decodeData == null) return [];
+
+    decodeData.forEach((id, prod) {
+      //print(prod);
+      final prodTemp = ProductoModel.fromJson(prod);
+      prodTemp.id = id;
+
+      productos.add(prodTemp);
+    });
+
+    //print(productos[0].id);
+
+    print(productos);
+    return productos;
+  }
 }

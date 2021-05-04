@@ -30,6 +30,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   rxdart: ^0.26.0
   http:
+  mime_type:
+  shared_preferences: 
+
 
 dev_dependencies:
   flutter_test:
