@@ -77,7 +77,8 @@ class LoginPage extends StatelessWidget {
             child: TextField(
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  icon: Icon(Icons.alternate_email, color: Colors.deepPurple),
+                  icon: Icon(Icons.alternate_email,
+                      color: Colors.indigo.shade900),
                   hintText: 'ejemplo@correo.com',
                   labelText: 'Correo electronico',
                   counterText: snapshot.data,
@@ -98,7 +99,7 @@ class LoginPage extends StatelessWidget {
               obscureText: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
+                  icon: Icon(Icons.lock_outline, color: Colors.indigo.shade900),
                   labelText: 'Contraseña',
                   counterText: snapshot.data,
                   errorText: snapshot.error),
@@ -138,10 +139,10 @@ class LoginPage extends StatelessWidget {
       mostrarAlerta(context, info['mensaje']);
     }
 
-    print('=======================');
+    /*print('=======================');
     print('Email: ${bloc.email}');
     print('Password: ${bloc.password}');
-    print('=======================');
+    print('=======================');*/
   }
 
   Widget _crearFondo(BuildContext context) {
@@ -152,8 +153,8 @@ class LoginPage extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
           gradient: LinearGradient(colors: <Color>[
-        Color.fromRGBO(63, 63, 156, 1.0),
-        Color.fromRGBO(60, 60, 150, 1.0)
+        Color.fromRGBO(6, 66, 187, 40),
+        Color.fromRGBO(6, 66, 187, 40)
       ])),
     );
 
@@ -179,7 +180,7 @@ class LoginPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               //Icon(Icons.person_pin_circle, color: Colors.white, size: 100.0),
-              SizedBox(height: 10.0, width: double.infinity),
+              SizedBox(height: 2.0, width: double.infinity),
               Image(
                 image: NetworkImage(
                     'https://th.bing.com/th/id/R9d41384b7dc0292aac7ce51de28188bb?rik=uduoj9ZQA4W6lA&pid=ImgRaw'),

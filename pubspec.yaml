@@ -32,6 +32,7 @@ dependencies:
   http:
   mime_type:
   shared_preferences: 
+  flutter_custom_clippers: 
 
 
 dev_dependencies:

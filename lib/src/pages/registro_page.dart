@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:formvalidation/src/bloc/login_bloc.dart';
 import 'package:formvalidation/src/bloc/provider.dart';
 import 'package:formvalidation/src/providers/usuario_provider.dart';
@@ -45,8 +46,17 @@ class RegistroPage extends StatelessWidget {
                 ]),
             child: Column(
               children: <Widget>[
-                Text('Registro', style: TextStyle(fontSize: 20.0)),
+                Text('Registro',
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    )),
                 SizedBox(height: 60.0),
+                _crearNombre(bloc),
+                SizedBox(height: 30.0),
+                _crearApellido(bloc),
+                SizedBox(height: 30.0),
+                _crearDate(bloc),
+                SizedBox(height: 30.0),
                 _crearEmail(bloc),
                 SizedBox(height: 30.0),
                 _crearPassword(bloc),
@@ -67,6 +77,80 @@ class RegistroPage extends StatelessWidget {
     );
   }
 
+  Widget _crearNombre(LoginBloc bloc) {
+    return StreamBuilder(
+        stream: bloc.nombreStream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: TextField(
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.account_circle_outlined,
+                    color: Color.fromRGBO(250, 132, 6, 40),
+                  ),
+                  labelText: 'Nombre',
+                  counter: snapshot.data,
+                  errorText: snapshot.error),
+              onChanged: bloc.changeNombre,
+            ),
+          );
+        });
+  }
+
+  Widget _crearApellido(LoginBloc bloc) {
+    return StreamBuilder(
+        stream: bloc.apellidoStream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: TextField(
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.account_circle_outlined,
+                    color: Color.fromRGBO(250, 132, 6, 40),
+                  ),
+                  labelText: 'Apellido',
+                  counter: snapshot.data,
+                  errorText: snapshot.error),
+              onChanged: bloc.changeApellido,
+            ),
+          );
+        });
+  }
+
+  Widget _crearDate(LoginBloc bloc) {
+    return StreamBuilder(
+        stream: bloc.dateStream,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: TextField(
+                keyboardType: TextInputType.datetime,
+                decoration: InputDecoration(
+                  icon: Icon(Icons.calendar_today_outlined,
+                      color: Color.fromRGBO(250, 132, 6, 40)),
+                  counterText: snapshot.data,
+                ),
+                onTap: () {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  _selectDate(context);
+                }),
+          );
+        });
+  }
+
+  _selectDate(BuildContext context) async {
+    DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: new DateTime.now(),
+      firstDate: new DateTime(1940),
+      lastDate: new DateTime(2080),
+    );
+  }
+
   Widget _crearEmail(LoginBloc bloc) {
     return StreamBuilder(
         stream: bloc.emailStream,
@@ -76,7 +160,8 @@ class RegistroPage extends StatelessWidget {
             child: TextField(
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  icon: Icon(Icons.alternate_email, color: Colors.deepPurple),
+                  icon: Icon(Icons.alternate_email,
+                      color: Color.fromRGBO(250, 132, 6, 40)),
                   hintText: 'ejemplo@correo.com',
                   labelText: 'Correo electronico',
                   counterText: snapshot.data,
@@ -97,7 +182,8 @@ class RegistroPage extends StatelessWidget {
               obscureText: true,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                  icon: Icon(Icons.lock_outline, color: Colors.deepPurple),
+                  icon: Icon(Icons.lock_outline,
+                      color: Color.fromRGBO(250, 132, 6, 40)),
                   labelText: 'Contraseña',
                   counterText: snapshot.data,
                   errorText: snapshot.error),
@@ -130,10 +216,11 @@ class RegistroPage extends StatelessWidget {
   }
 
   _register(LoginBloc bloc, BuildContext context) async {
-    final info = await usuarioProvider.nuevoUsuario(bloc.email, bloc.password);
+    final info = await usuarioProvider.nuevoUsuario(
+        bloc.nombre, bloc.apellido, bloc.date, bloc.email, bloc.password);
 
     if (info['ok']) {
-      Navigator.pushReplacementNamed(context, 'home');
+      Navigator.pushReplacementNamed(context, 'login');
     } else {
       mostrarAlerta(context, info['mensaje']);
     }
@@ -148,8 +235,8 @@ class RegistroPage extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
           gradient: LinearGradient(colors: <Color>[
-        Color.fromRGBO(63, 63, 156, 1.0),
-        Color.fromRGBO(60, 60, 150, 1.0)
+        Color.fromRGBO(6, 66, 187, 40),
+        Color.fromRGBO(6, 66, 187, 40)
       ])),
     );
 

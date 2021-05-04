@@ -1,6 +1,33 @@
 import 'dart:async';
 
 class Validators {
+  final validarNombre = StreamTransformer<String, String>.fromHandlers(
+      handleData: (nombre, sink) {
+    if (nombre != '') {
+      sink.add(nombre);
+    } else {
+      sink.addError('Por favor solo ingresar letras');
+    }
+  });
+
+  final validarApellido = StreamTransformer<String, String>.fromHandlers(
+      handleData: (apellido, sink) {
+    if (apellido.isNotEmpty) {
+      sink.add(apellido);
+    } else {
+      sink.addError('Por favor solo ingresar letras');
+    }
+  });
+
+  final validarDate =
+      StreamTransformer<String, String>.fromHandlers(handleData: (date, sink) {
+    if (date == null) {
+      sink.add(date);
+    } else {
+      sink.addError('No puede ir vacio');
+    }
+  });
+
   final validarEmail =
       StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {
     Pattern pattern =
