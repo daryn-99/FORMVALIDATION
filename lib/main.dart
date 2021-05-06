@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formvalidation/config/palette.dart';
 
 import 'package:formvalidation/src/bloc/provider.dart';
 
@@ -24,15 +25,19 @@ class MyApp extends StatelessWidget {
     return Provider(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Material App',
-        initialRoute: 'login',
+        title: 'RECO UI',
+        initialRoute: 'home',
         routes: {
           'login': (BuildContext context) => LoginPage(),
           'registro': (BuildContext context) => RegistroPage(),
           'home': (BuildContext context) => HomePage(),
           'producto': (BuildContext context) => ProductoPage(),
         },
-        theme: ThemeData(primaryColor: Colors.indigo.shade900),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          scaffoldBackgroundColor: Palette.scaffold,
+        ),
       ),
     );
   }

@@ -6,23 +6,31 @@ ProductoModel productoModelFromJson(String str) =>
 String productoModelToJson(ProductoModel data) => json.encode(data.toJson());
 
 class ProductoModel {
-  String id;
-  String titulo;
-  double valor;
-  bool disponible;
-  String fotoUrl;
-
   ProductoModel({
     this.id,
-    this.titulo = '',
+    this.nombre = '',
+    this.apellido = '',
+    this.fechaDeNacimiento = '',
+    this.titulo = "",
     this.valor = 0.0,
     this.disponible = true,
     this.fotoUrl,
   });
 
-  factory ProductoModel.fromJson(Map<String, dynamic> json) =>
-      new ProductoModel(
+  String id;
+  String nombre;
+  String apellido;
+  String fechaDeNacimiento;
+  String titulo;
+  double valor;
+  bool disponible;
+  String fotoUrl;
+
+  factory ProductoModel.fromJson(Map<String, dynamic> json) => ProductoModel(
         id: json["id"],
+        nombre: json["nombre"],
+        apellido: json["apellido"],
+        fechaDeNacimiento: json["fecha de nacimiento"],
         titulo: json["titulo"],
         valor: json["valor"],
         disponible: json["disponible"],
@@ -31,6 +39,9 @@ class ProductoModel {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "nombre": nombre,
+        "apellido": apellido,
+        "fecha de nacimiento": fechaDeNacimiento,
         "titulo": titulo,
         "valor": valor,
         "disponible": disponible,

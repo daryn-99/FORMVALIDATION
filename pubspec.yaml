@@ -33,6 +33,8 @@ dependencies:
   mime_type:
   shared_preferences: 
   flutter_custom_clippers: 
+  cached_network_image:
+  material_design_icons_flutter: 4.0.5955
 
 
 dev_dependencies:
