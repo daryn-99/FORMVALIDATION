@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:formvalidation/widgets/profile_avatar.dart';
 
 class CreatePostContainer extends StatelessWidget {
   @override
@@ -11,11 +11,8 @@ class CreatePostContainer extends StatelessWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(
-                  radius: 20.0,
-                  backgroundColor: Colors.grey[200],
-                  backgroundImage: NetworkImage(
-                      'https://th.bing.com/th/id/OIP.ZCmvG2PxbFUJ_a82MFPoYwHaHa?pid=ImgDet&rs=1'),
+                ProfileAvatar(
+                  imageUrl: 'http://www.dant.dk/doge/img/app_icon.png',
                 ),
                 const SizedBox(width: 8.0),
                 Expanded(
@@ -34,12 +31,12 @@ class CreatePostContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FlatButton.icon(
-                    onPressed: () => print('Documentos'),
+                    onPressed: () => print('Comunicados'),
                     icon: const Icon(
                       Icons.insert_drive_file_sharp,
                       color: Colors.yellow,
                     ),
-                    label: Text('Doc'),
+                    label: Text('Comunicados'),
                   ),
                   const VerticalDivider(width: 8.0),
                   FlatButton.icon(
